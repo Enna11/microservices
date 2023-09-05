@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Inscription</title>
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+    <style>
+        /* Styles pour les boutons */
+        input[type="submit"] {
+            background-image: linear-gradient(163deg, #00ff75 0%, #3700ff 100%);
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            animation: flash 1s linear;
+        }
+
+        /* Animation de couleur flash */
+        @keyframes flash {
+            0% {
+                background-color: transparent;
+            }
+            50% {
+                background-image: linear-gradient(163deg, #00642f 0%, #13034b 100%);
+            }
+            100% {
+                background-color: transparent;
+            }
+        }
+
+        /* Styles pour les mots "Last Name", "First Name", "Email", "Gender", "Date of Birth" et "Password" */
+        label {
+            background-image: linear-gradient(163deg, #00ff75 0%, #3700ff 100%);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-right: 5px;
+        }
+        #heading {
+  text-align: center;
+  margin: 1em;
+  color: rgb(255, 255, 225);
+  font-size: 2em;
+}
+    </style>
+</head>
+<body>
+   
+    <form method="POST" action="/register" class="form register-form">
+        <div id="heading">Inscription</div>
+        <label for="first-name"> Prénom</label>
+        <input type="text" id="first-name" name="prénom" required>
+
+        <label for="last-name"> Nom de famille</label>
+        <input type="text" id="last-name" name="nom de famille" required>
+
+        <label for="email">Adresse e-mail</label>
+        <input type="email" id="email" name="Adresse e-mail" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="mot de passe" required>
+
+        <label for="gender">Genre</label>
+        <select id="gender" name="Genre">
+            <option value="male">Homme</option>
+            <option value="female">Femme</option>
+        </select><br>
+
+        <label for="dob">Date de naissance</label>
+        <input type="date" id="dob" name="dob" required>
+
+        <input type="submit" value="S'inscrire">
+    </form>
+</body>
+</html>

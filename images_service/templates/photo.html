@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Photo</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#like-btn").click(function() {
+                var photoId = $(this).attr("data-photo-id");
+                $.ajax({
+                    url: "/like/" + photoId,
+                    type: "POST",
+                    success: function(data) {
+                        $("#like-count").text(data.likes);
+                    }
+                });
+            });
+    
+            $("#comment-btn").click(function() {
+                var photoId = $(this).attr("data-photo-id");
+                var comment = $("#comment-input").val();
+    
+                $.ajax({
+                    url: "/comment/" + photoId,
+                    type: "POST",
+                    data: { comment: comment },
+                    success: function(data) {
+                        $("#comment-section").append('<p>' + data.comment + '</p>');
+                        $("#comment-input").val('');
+                    }
+                });
+            });
+        });
+    </script>
+    
+</head>
+<body>
+    <h1> Photo téléchargée</h1>
+    {% if 'file_name' in photo_data %}
+    <img src="data:image/{{ photo_data['file_name'].split('.')[-1] }};base64,{{ photo_data['image_data'] }}" alt="Uploaded">
+    <br>
+    <br>
+
+    <div>
+        <button id="like-btn" data-photo-id="{{ photo_data['id'] }}">J'aime</button>
+
+        <span id="like-count">{{ photo_data['likes'] }}</span> likes
+    </div>
+    <div id="comment-section">
+        {% for comment in photo_data['comments'] %}
+            <p>{{ comment['comment'] }}</p>
+        {% endfor %}
+    </div>
+    <div>
+        <input type="text" id="comment-input">
+        <button class="comment-btn" data-photo-id="{{ photo['id'] }}">Commenter</button>
+
+    </div>
+    {% else %}
+    <p>Photo not found</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  login_service:
+    container_name: microservices-login_service  # Nom du conteneur pour le service de login
+    build:
+      context: ./login_service
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: enna
+      MYSQL_PASSWORD: poiuytre
+      MYSQL_DATABASE: enameli
+    ports:
+      - "5007:5001"
+    depends_on:
+      - mysqldb
+      - register_service
+    networks:
+      - app-net
+
+  register_service:
+    container_name: microservices-register-service  # Nom du conteneur pour le service de register
+    build:
+      context: ./register_service
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: enna
+      MYSQL_PASSWORD: poiuytre
+      MYSQL_DATABASE: enameli
+    ports:
+      - "5003:5003"
+    depends_on:
+      - mysqldb
+    networks:
+      - app-net
+
+  images_service:
+    container_name: microservices-images-service  # Nom du conteneur pour le service d'images
+    build:
+      context: ./images_service
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: enna
+      MYSQL_PASSWORD: poiuytre
+      MYSQL_DATABASE: enameli
+    ports:
+      - "5008:5008"
+    depends_on:
+      - mysqldb
+      - login_service
+    networks:
+      - app-net
+
+  mysqldb:
+    container_name: mysqldb
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: iddirena
+      MYSQL_DATABASE: enameli
+      MYSQL_USER: enna
+      MYSQL_PASSWORD: poiuytre
+    networks:
+      - app-net
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin:latest
+    links:
+      - mysqldb:db
+    ports:
+      - "80:80"
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    name: app-net
